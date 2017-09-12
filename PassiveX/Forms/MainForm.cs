@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.IO;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +21,11 @@ namespace PassiveX.Forms
         {
             Log.Form = this;
 
-            var rootCertificate = new X509Certificate2(@"C:\projects\PassiveX\PassiveX\Resources\ca.pfx", "", X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            var rootKeyDir = Directory.GetParent(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)).Parent;
+            if (rootKeyDir == null) throw new NullReferenceException(@"프로젝트의 리소스 폴더를 찾을 수 없습니다.");
+
+            var rootKey = Path.Combine(rootKeyDir.FullName, "Resources") + @"\ca.pfx";
+            var rootCertificate = new X509Certificate2(rootKey, "", X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
             CertificateBuilder.Initialize(rootCertificate);
             CertificateBuilder.Install();
 
@@ -56,3 +62,4 @@ namespace PassiveX.Forms
         }
     }
 }
+
