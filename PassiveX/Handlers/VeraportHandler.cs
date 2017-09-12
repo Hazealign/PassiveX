@@ -72,7 +72,7 @@ namespace PassiveX.Handlers
                     installstate = true,
                     killbit = false,
                     localversion = x.Element("objectVersion").Value,
-                    objectclsid = x.Element("objectMIMEType").Value,
+                    objectclsid = x.Element("objectMIMEType")?.Value ?? "application/vnd.microsoft.portable-executable",
                     objectname = x.Element("objectName").Value,
                     objecttype = 0,
                     objectversion = x.Element("objectVersion").Value,
